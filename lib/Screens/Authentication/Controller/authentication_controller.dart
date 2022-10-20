@@ -41,8 +41,8 @@ class AuthController extends GetxController {
 
   var emailId = '';
   var password = '';
-  // var name = '';
-  // var mobileNo = '';
+  var name = '';
+  var mobileNo = '';
 
   RxBool visible = true.obs;
   RxString version = "".obs;
