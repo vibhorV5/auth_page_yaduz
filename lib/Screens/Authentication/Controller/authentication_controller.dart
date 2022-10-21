@@ -1,10 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+
 import 'package:yaduz_login_join_us/Constants/constants.dart';
 import 'package:yaduz_login_join_us/Services/Authentication/auth_services.dart';
 import 'package:yaduz_login_join_us/Utility/utility.dart';
-import 'package:http/http.dart' as http;
 
 class AuthController extends GetxController {
   String? deviceId;
@@ -20,7 +21,6 @@ class AuthController extends GetxController {
 
   TextEditingController emailIdController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController registerEmailIdController = TextEditingController();
   TextEditingController registerPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -41,11 +41,17 @@ class AuthController extends GetxController {
 
   var emailId = '';
   var password = '';
+  var registerPassword = '';
+  var registerEmailId = '';
   var name = '';
   var mobileNo = '';
 
   RxBool visible = true.obs;
   RxString version = "".obs;
+
+  RxString message = "".obs;
+
+  RxBool check = false.obs;
 
   String? validateMobileNo(String value) {
     if (value.length < 10) {
@@ -135,45 +141,49 @@ class AuthController extends GetxController {
   }
 
   //register user method with status codes
-  // Future<void> registerUser() async {
-  //   final isValid = joinUsFormKey.currentState!.validate();
-  //   if (!isValid) {
-  //     print('not valid form');
-  //     Get.back();
-  //     return;
-  //   } else {
-  //     joinUsFormKey.currentState!.save();
-  //     final response =
-  //     await authServices.registerUser(name,mobileNo,emailId, password, deviceId,deviceVersion);
-  //     if (response == " ") {
-  //       Get.back();
-  //       customToast(Constants.checkInternetConnection,redColor,redColor.withOpacity(0.2), "Error");
-  //       // customSnackBar(Constants.connectionFailed,Constants.checkInternetConnection);
-  //     } else if (response is http.Response) {
-  //       if (response.statusCode == 404) {
-  //         Map mapdata = jsonDecode(response.body.toString());
-  //         Get.back();
-  //         customToast(mapdata['message'][0],redColor,redColor.withOpacity(0.2), "Error");
-  //         // customSnackBar(Constants.failed, mapdata['message'][0]);
-  //       } else if (response.statusCode == 500) {
-  //         Map mapdata = jsonDecode(response.body.toString());
-  //         Get.back();
-  //         customToast(Constants.checkServerConnection,redColor,redColor.withOpacity(0.2), "Error");
-  //         // customSnackBar(Constants.connectionFailed,Constants.checkServerConnection);
-  //       } else if (response.statusCode == 200) {
-  //         Map mapdata = jsonDecode(response.body.toString());
-  //         if(mapdata['success'] == '0'){
-  //           Get.back();
-  //           customToast(mapdata['message'],redColor,redColor.withOpacity(0.2), "Error");
-  //           // customSnackBar(Constants.failed, mapdata['message']);
-  //         }else{
-  //           Get.back();
-  //           saveToken(mapdata['data']['remember_token']);
-  //           Get.offAllNamed(bottomNavBarRoute);
-  //         }
-  //         print(mapdata);
-  //       }
-  //     }
-  //   }
-  // }
+  Future<void> registerUser() async {
+    final isValid = joinUsFormKey.currentState!.validate();
+    if (!isValid) {
+      print('not valid form');
+      Get.back();
+      return;
+    } else {
+      joinUsFormKey.currentState!.save();
+      final response = await authServices.registerUser(name, mobileNo,
+          registerEmailId, registerPassword, deviceId, deviceVersion);
+      if (response == " ") {
+        Get.back();
+        customToast(Constants.checkInternetConnection, Colors.red,
+            Colors.red.withOpacity(0.2), "Error");
+        // customSnackBar(Constants.connectionFailed,Constants.checkInternetConnection);
+      } else if (response is http.Response) {
+        if (response.statusCode == 404) {
+          Map mapdata = jsonDecode(response.body.toString());
+          Get.back();
+          customToast(mapdata['message'][0], Colors.red,
+              Colors.red.withOpacity(0.2), "Error");
+          // customSnackBar(Constants.failed, mapdata['message'][0]);
+        } else if (response.statusCode == 500) {
+          Map mapdata = jsonDecode(response.body.toString());
+          Get.back();
+          customToast(Constants.checkServerConnection, Colors.red,
+              Colors.red.withOpacity(0.2), "Error");
+          // customSnackBar(Constants.connectionFailed,Constants.checkServerConnection);
+        } else if (response.statusCode == 200) {
+          Map mapdata = jsonDecode(response.body.toString());
+          if (mapdata['success'] == '0') {
+            Get.back();
+            customToast(mapdata['message'], Colors.red,
+                Colors.red.withOpacity(0.2), "Error");
+            // customSnackBar(Constants.failed, mapdata['message']);
+          } else {
+            Get.back();
+            // saveToken(mapdata['data']['remember_token']);
+            // Get.offAllNamed(bottomNavBarRoute);
+          }
+          print(mapdata);
+        }
+      }
+    }
+  }
 }

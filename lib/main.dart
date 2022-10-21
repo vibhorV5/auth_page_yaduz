@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yaduz_login_join_us/Screens/Authentication/View/authentication_screen.dart';
 import 'package:get/get.dart';
+
+import 'package:yaduz_login_join_us/Screens/Authentication/View/authentication_screen.dart';
 
 void main() {
   runApp(const MyApp());

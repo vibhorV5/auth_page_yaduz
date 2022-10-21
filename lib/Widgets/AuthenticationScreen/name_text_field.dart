@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class EmailTextFeild extends StatelessWidget {
-  const EmailTextFeild(
-      {super.key,
-      required this.emailController,
-      required this.onSaved,
-      required this.validator});
+import 'package:yaduz_login_join_us/Screens/Authentication/Controller/authentication_controller.dart';
 
-  final TextEditingController? emailController;
-  final void Function(String?)? onSaved;
-  final String? Function(String?)? validator;
+class NameTextField extends StatelessWidget {
+  const NameTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
+      // autovalidateMode: AutovalidateMode.disabled,
       cursorColor: Colors.black,
-      keyboardType: TextInputType.emailAddress,
-      controller: emailController,
+      keyboardType: TextInputType.name,
+      controller: Get.find<AuthController>().nameController,
       minLines: 1,
-      onSaved: onSaved,
-      validator: validator,
-
+      onSaved: (value) {
+        Get.find<AuthController>().name = value!;
+      },
+      validator: (value) {
+        return Get.find<AuthController>().validateName(value!);
+      },
       decoration: InputDecoration(
-        hintText: 'Enter your email id here',
+        hintText: 'Enter your name',
         enabled: true,
         filled: true,
-        fillColor: Colors.white /*Colors.red*/,
+        fillColor: Colors.white,
         hintStyle: TextStyle(
             fontSize: 13.0,
             color: Colors.black.withOpacity(0.3),

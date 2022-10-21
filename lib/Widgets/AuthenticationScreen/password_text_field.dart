@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:yaduz_login_join_us/Screens/Authentication/Controller/authentication_controller.dart';
 
 class PasswordTextField extends StatelessWidget {
-  const PasswordTextField({super.key});
+  const PasswordTextField({
+    super.key,
+    required this.passwordController,
+    required this.onSaved,
+    required this.validator,
+  });
+
+  final TextEditingController? passwordController;
+  final void Function(String?)? onSaved;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +23,10 @@ class PasswordTextField extends StatelessWidget {
         cursorColor: Colors.black,
         keyboardType: TextInputType.text,
         obscureText: Get.find<AuthController>().visible.value,
-        controller: Get.find<AuthController>().passwordController,
+        controller: passwordController,
         minLines: 1,
-        onSaved: (value) {
-          Get.find<AuthController>().password = value!;
-        },
-        validator: (value) {
-          return Get.find<AuthController>().validatePassword(value!);
-        },
+        onSaved: onSaved,
+        validator: validator,
         toolbarOptions: const ToolbarOptions(
           copy: false,
           cut: false,

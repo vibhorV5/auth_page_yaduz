@@ -1,8 +1,8 @@
-import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -22,7 +22,7 @@ Future<String?> getDeviceId() async {
 }
 
 Future<String?> getAndroidVersion() async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   String? deviceVersion;
   if (Platform.isAndroid) {
     var androidInfo = await DeviceInfoPlugin().androidInfo;
@@ -31,7 +31,7 @@ Future<String?> getAndroidVersion() async {
 
   if (Platform.isIOS) {
     var iosInfo = await DeviceInfoPlugin().iosInfo;
-    var systemName = iosInfo.systemName;
+    // var systemName = iosInfo.systemName;
     deviceVersion = iosInfo.systemVersion;
   }
   return deviceVersion;
@@ -51,6 +51,19 @@ Widget customText(text, fontSize, fontFamily, fontColor, height) {
       fontSize: fontSize,
       fontFamily: fontFamily,
       height: height,
+    ),
+  );
+}
+
+Widget customTextLeft(text, fontSize, fontFamily, fontColor) {
+  return Text(
+    text,
+    textAlign: TextAlign.start,
+    // overflow: TextOverflow.ellipsis,
+    style: TextStyle(
+      color: fontColor,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
     ),
   );
 }
