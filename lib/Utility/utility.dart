@@ -9,21 +9,21 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
 class Utility {
-  Future<String?> getDeviceId() async {
+  Future<String> getDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String? deviceId;
     if (Platform.isAndroid) {
-      // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       deviceId = await PlatformDeviceId.getDeviceId;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       deviceId = iosInfo.identifierForVendor.toString();
     }
-    return deviceId;
+    return deviceId!;
   }
 
   Future<String?> getAndroidVersion() async {
-    // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String? deviceVersion;
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
@@ -32,7 +32,7 @@ class Utility {
 
     if (Platform.isIOS) {
       var iosInfo = await DeviceInfoPlugin().iosInfo;
-      // var systemName = iosInfo.systemName;
+      var systemName = iosInfo.systemName;
       deviceVersion = iosInfo.systemVersion;
     }
     return deviceVersion;

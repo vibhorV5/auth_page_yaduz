@@ -9,7 +9,7 @@ import 'package:yaduz_login_join_us/Services/Authentication/auth_services.dart';
 import 'package:yaduz_login_join_us/Utility/utility.dart';
 
 class AuthController extends GetxController {
-  String? deviceId;
+  RxString deviceId = ''.obs;
   String? deviceVersion;
 
   bool loginStatus = false;
@@ -31,7 +31,7 @@ class AuthController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    deviceId = await utility.getDeviceId();
+    deviceId.value = await utility.getDeviceId();
     deviceVersion = await utility.getAndroidVersion();
     version.value = await utility.appVersion();
   }
@@ -114,7 +114,7 @@ class AuthController extends GetxController {
     } else {
       loginFormKey.currentState!.save();
       final response = await authServices.loginUser(
-          emailId, password, deviceId, deviceVersion);
+          emailId, password, deviceId.value, deviceVersion);
       if (response == " ") {
         Get.back();
         utility.customToast(Constants.checkInternetConnection, Colors.red,
@@ -168,7 +168,7 @@ class AuthController extends GetxController {
     } else {
       joinUsFormKey.currentState!.save();
       final response = await authServices.registerUser(name, mobileNo,
-          registerEmailId, registerPassword, deviceId, deviceVersion);
+          registerEmailId, registerPassword, deviceId.value, deviceVersion);
       if (response == " ") {
         Get.back();
         utility.customToast(Constants.checkInternetConnection, Colors.red,

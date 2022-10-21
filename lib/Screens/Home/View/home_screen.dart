@@ -12,21 +12,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: Get.height,
-          width: Get.width,
-          color: Colors.grey.shade200,
-          child: Column(
-            children: [
-              Text('Name: ${Get.find<AuthController>().nameR}'),
-              Text('Email Id: ${Get.find<AuthController>().emailR}'),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Home Screen'),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            height: Get.height,
+            width: Get.width,
+            color: Colors.grey.shade200,
+            child: Column(
+              children: [
+                Text('Name: ${Get.find<AuthController>().nameR}'),
+                Text('Email Id: ${Get.find<AuthController>().emailR}'),
+              ],
+            ),
           ),
         ),
       ),

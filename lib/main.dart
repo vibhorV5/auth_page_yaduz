@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:yaduz_login_join_us/Screens/Authentication/View/authentication_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -16,8 +17,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Yaduz login join_us',
       theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
+          primarySwatch: Colors.grey,
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.light,
+          )),
       home: const AuthenticationScreen(),
     );
   }

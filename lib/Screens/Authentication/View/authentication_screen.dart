@@ -120,12 +120,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                     ),
                   ),
                 ),
-                utility.customText(
-                    'App version v${Get.find<AuthController>().version.value.toString()}',
-                    12.0,
-                    'Quicksand Regular',
-                    Colors.grey.withOpacity(0.7),
-                    1.0),
+                Obx(() {
+                  return utility.customText(
+                      'App version v${Get.find<AuthController>().version.value.toString()}',
+                      12.0,
+                      'Quicksand Regular',
+                      Colors.grey.withOpacity(0.7),
+                      1.0);
+                }),
               ],
             ),
           ),
