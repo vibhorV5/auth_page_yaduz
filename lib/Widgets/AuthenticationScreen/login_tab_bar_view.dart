@@ -12,6 +12,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final utility = Utility();
     return Form(
       key: Get.find<AuthController>().loginFormKey,
       child: Column(
@@ -45,7 +46,7 @@ class Login extends StatelessWidget {
                     .loginFormKey
                     .currentState!
                     .validate()) {
-                  showLoading(context);
+                  utility.showLoading(context);
 
                   Get.find<AuthController>().loginUser();
                 }

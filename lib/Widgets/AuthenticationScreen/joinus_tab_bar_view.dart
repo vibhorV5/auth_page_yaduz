@@ -16,6 +16,7 @@ class JoinUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final utility = Utility();
     return Form(
       key: Get.find<AuthController>().joinUsFormKey,
       child: Column(
@@ -138,7 +139,7 @@ class JoinUs extends StatelessWidget {
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(top: 10.0),
-                        child: customTextLeft(
+                        child: utility.customTextLeft(
                             Get.find<AuthController>().message.value,
                             13.0,
                             'Quicksand Medium',
@@ -155,7 +156,7 @@ class JoinUs extends StatelessWidget {
                   Get.find<AuthController>().message.value =
                       'Please agree to our terms & condition and privacy policy';
                 } else {
-                  showLoading(context);
+                  utility.showLoading(context);
                   Get.find<AuthController>().registerUser();
                 }
               },

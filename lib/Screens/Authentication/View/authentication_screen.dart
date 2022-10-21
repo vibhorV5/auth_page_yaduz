@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:yaduz_login_join_us/Screens/Authentication/Controller/authentication_controller.dart';
+import 'package:yaduz_login_join_us/Utility/utility.dart';
 import 'package:yaduz_login_join_us/Widgets/AuthenticationScreen/joinus_tab_bar_view.dart';
 import 'package:yaduz_login_join_us/Widgets/AuthenticationScreen/login_tab_bar_view.dart';
 
@@ -15,12 +16,15 @@ class AuthenticationScreen extends StatefulWidget {
 class _AuthenticationScreenState extends State<AuthenticationScreen>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
-  final authController = Get.put(AuthController());
+
+  final utility = Utility();
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+
+    Get.put(AuthController());
   }
 
   @override
@@ -39,7 +43,27 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 150, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: Column(
+                    children: const [
+                      Text(
+                        'Yaduz Fashion',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w400),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 25.0, top: 5),
+                        child: Text(
+                          'ONE STOP FOR ALL',
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border(
@@ -85,7 +109,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                 Padding(
                   padding: const EdgeInsets.only(top: 22, right: 15, left: 15),
                   child: SizedBox(
-                    height: Get.height * 0.64,
+                    height: Get.height * 0.6,
                     child: TabBarView(
                       // physics: NeverScrollableScrollPhysics(),
                       controller: tabController,
@@ -96,6 +120,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen>
                     ),
                   ),
                 ),
+                utility.customText(
+                    'App version v${Get.find<AuthController>().version.value.toString()}',
+                    12.0,
+                    'Quicksand Regular',
+                    Colors.grey.withOpacity(0.7),
+                    1.0),
               ],
             ),
           ),

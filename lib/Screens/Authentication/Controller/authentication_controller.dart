@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 import 'package:yaduz_login_join_us/Constants/constants.dart';
+import 'package:yaduz_login_join_us/Screens/Home/View/home_screen.dart';
 import 'package:yaduz_login_join_us/Services/Authentication/auth_services.dart';
 import 'package:yaduz_login_join_us/Utility/utility.dart';
 
@@ -14,6 +15,7 @@ class AuthController extends GetxController {
   bool loginStatus = false;
 
   final authServices = AuthServices();
+  final utility = Utility();
 
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
@@ -26,17 +28,23 @@ class AuthController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileNoController = TextEditingController();
 
-  // late TextEditingController emailController;
-  // late TextEditingController passwordController;
-
   @override
   void onInit() async {
     super.onInit();
-    // emailController = TextEditingController();
-    // passwordController = TextEditingController();
-    deviceId = await getDeviceId();
-    deviceVersion = await getAndroidVersion();
-    version.value = await appVersion();
+    deviceId = await utility.getDeviceId();
+    deviceVersion = await utility.getAndroidVersion();
+    version.value = await utility.appVersion();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    emailIdController.dispose();
+    passwordController.dispose();
+    registerEmailIdController.dispose();
+    registerPasswordController.dispose();
+    nameController.dispose();
+    mobileNoController.dispose();
   }
 
   var emailId = '';
@@ -45,6 +53,10 @@ class AuthController extends GetxController {
   var registerEmailId = '';
   var name = '';
   var mobileNo = '';
+
+//data fetched
+  var nameR = '';
+  var emailR = '';
 
   RxBool visible = true.obs;
   RxString version = "".obs;
@@ -105,7 +117,7 @@ class AuthController extends GetxController {
           emailId, password, deviceId, deviceVersion);
       if (response == " ") {
         Get.back();
-        customToast(Constants.checkInternetConnection, Colors.red,
+        utility.customToast(Constants.checkInternetConnection, Colors.red,
             Colors.red.withOpacity(0.2), "Error");
         // customSnackBar(Constants.connectionFailed,Constants.checkInternetConnection);
       } else if (response is http.Response) {
@@ -113,26 +125,32 @@ class AuthController extends GetxController {
           print(response.body.toString());
           Map mapdata = jsonDecode(response.body.toString());
           Get.back();
-          customToast(mapdata['message'][0], Colors.red,
+          utility.customToast(mapdata['message'][0], Colors.red,
               Colors.red.withOpacity(0.2), "Error");
           // customSnackBar(Constants.failed, mapdata['message'][0]);
         } else if (response.statusCode == 500) {
           Map mapdata = jsonDecode(response.body.toString());
           Get.back();
-          customToast(Constants.checkServerConnection, Colors.red,
+          utility.customToast(Constants.checkServerConnection, Colors.red,
               Colors.red.withOpacity(0.2), "Error");
           // customSnackBar(Constants.connectionFailed,Constants.checkServerConnection);
         } else if (response.statusCode == 200) {
           Map mapdata = jsonDecode(response.body.toString());
           if (mapdata['success'] == '0') {
             Get.back(closeOverlays: true);
-            customToast(mapdata['message'], Colors.red,
+            utility.customToast(mapdata['message'], Colors.red,
                 Colors.red.withOpacity(0.2), "Error");
             // customSnackBar(Constants.pleaseTryAgain, mapdata['message']);
           } else {
             Get.back();
             // saveToken(mapdata['data']['remember_token']);
             // Get.offAllNamed(bottomNavBarRoute);
+            print('hello');
+            print(mapdata['data']['name']);
+            nameR = mapdata['data']['name'];
+            print(mapdata['data']['email']);
+            emailR = mapdata['data']['email'];
+            Get.to(() => const HomeScreen());
           }
           print(mapdata);
         }
@@ -153,31 +171,39 @@ class AuthController extends GetxController {
           registerEmailId, registerPassword, deviceId, deviceVersion);
       if (response == " ") {
         Get.back();
-        customToast(Constants.checkInternetConnection, Colors.red,
+        utility.customToast(Constants.checkInternetConnection, Colors.red,
             Colors.red.withOpacity(0.2), "Error");
         // customSnackBar(Constants.connectionFailed,Constants.checkInternetConnection);
       } else if (response is http.Response) {
         if (response.statusCode == 404) {
           Map mapdata = jsonDecode(response.body.toString());
           Get.back();
-          customToast(mapdata['message'][0], Colors.red,
+          utility.customToast(mapdata['message'][0], Colors.red,
               Colors.red.withOpacity(0.2), "Error");
           // customSnackBar(Constants.failed, mapdata['message'][0]);
         } else if (response.statusCode == 500) {
           Map mapdata = jsonDecode(response.body.toString());
           Get.back();
-          customToast(Constants.checkServerConnection, Colors.red,
+          utility.customToast(Constants.checkServerConnection, Colors.red,
               Colors.red.withOpacity(0.2), "Error");
           // customSnackBar(Constants.connectionFailed,Constants.checkServerConnection);
         } else if (response.statusCode == 200) {
           Map mapdata = jsonDecode(response.body.toString());
           if (mapdata['success'] == '0') {
             Get.back();
-            customToast(mapdata['message'], Colors.red,
+            utility.customToast(mapdata['message'], Colors.red,
                 Colors.red.withOpacity(0.2), "Error");
             // customSnackBar(Constants.failed, mapdata['message']);
           } else {
             Get.back();
+            print('hello');
+            print(mapdata['data']['name']);
+            nameR = mapdata['data']['name'];
+            print(mapdata['data']['email']);
+            emailR = mapdata['data']['email'];
+
+            Get.to(() => const HomeScreen());
+
             // saveToken(mapdata['data']['remember_token']);
             // Get.offAllNamed(bottomNavBarRoute);
           }

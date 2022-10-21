@@ -31,8 +31,8 @@ class AuthServices {
     }
   }
 
-  Future<dynamic> registerUser(
-      name, phone, emailId, password, deviceId, deviceVersion) async {
+  Future<dynamic> registerUser(name, phone, registerEmailId, registerPassword,
+      deviceId, deviceVersion) async {
     try {
       var basicAuth = await authHeader();
       var url = Uri.parse('${Constants.baseUrl}${Constants.register}');
@@ -45,8 +45,8 @@ class AuthServices {
       }, body: {
         'name': name,
         'phone': phone,
-        'email': emailId,
-        'password': password,
+        'email': registerEmailId,
+        'password': registerPassword,
         'country_id': Constants.countryId,
       });
       // print(response);
